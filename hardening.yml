@@ -1,7 +1,7 @@
 ---
 - name: Hardening de servidores centos
   hosts: linux
-  become: true
+  become: true 
   user: sysadmin
 
   tasks:
