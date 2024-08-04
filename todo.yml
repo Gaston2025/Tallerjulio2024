@@ -1,0 +1,26 @@
+---
+- name: Copia la aplicacion todo, instala podman y abre el puerto
+  hosts: centos
+  become: true
+  user: sysadmin
+
+  tasks:
+
+  - name: Copiar directorio con la aplicacion
+    ansible.builtin.copy: 
+      src: ./files/docker-tomcat-tutorial-master
+      dest: /home/sysadmin
+      owner: sysadmin
+      group: sysadmin
+      mode: '0664'
+
+  - name: Instalar Podman
+    ansible.builtin.dnf:
+      name: podman
+      state: present
+
+  - name: Abrir el puerto 8008 TCP
+    ansible.posix.firewalld:
+      port: 8008/tcp
+      permanent: true 
+      state: enabled

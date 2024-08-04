@@ -1,0 +1,30 @@
+---
+- name: Instala modulo SSL y agregar proxy reverso
+  hosts: centos
+  become: true
+
+  tasks:
+
+    - name: Instalar mod ssl
+      ansible.builtin.dnf:
+        name: mod_ssl
+        state: present
+
+    - name: Agregar primer linea
+      ansible.builtin.lineinfile:
+        path: /etc/httpd/conf.d/ssl.conf
+        insertbefore: '</VirtualHost>'
+        line: 'ProxyPass "/todo"  "http://192.168.56.101:8008/todo"'
+        state: present
+
+    - name: Agregar segunda linea
+      ansible.builtin.lineinfile:
+        path: /etc/httpd/conf.d/ssl.conf
+        insertbefore: 'ProxyPass "/todo"  "http://192.168.56.101:8008/todo"'
+        line: 'ProxyPassReverse "/todo"  "http://192.168.56.101:8008/todo"'
+        state: present
+
+    - name: Reiniciar Apache para aplicar cambios
+      ansible.builtin.service:
+        name: httpd
+        state: restarted

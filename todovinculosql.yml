@@ -1,0 +1,15 @@
+---
+- name: Crea archivo de todo vinculado a la base de datos
+  hosts: centos
+  become: true
+  user: sysadmin
+
+  tasks:
+
+  - name: Genera el archivo 
+    ansible.builtin.copy:
+      src: ./files/app.properties
+      dest: /opt/config/
+      owner: sysadmin
+      group: sysadmin
+      mode: '0664'

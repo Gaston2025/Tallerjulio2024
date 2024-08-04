@@ -1,0 +1,19 @@
+---
+- name: Crea imagen Podman y la levanta
+  hosts: centos
+
+  tasks:
+
+    - name: Construir la imagen de Podman
+      containers.podman.podman_image:
+        name: tomcat
+        path: /home/sysadmin/docker-tomcat-tutorial-master
+        state: build
+
+    - name: Iniciar la imagen Podman
+      containers.podman.podman_container:
+        name: demo
+        image: tomcat
+        state: started
+        ports:
+          - "8008:8080"
