@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS todo;
 CREATE DATABASE todo;
 USE todo;
 CREATE TABLE `users` (
@@ -7,7 +8,7 @@ CREATE TABLE `users` (
 `username` varchar(250) DEFAULT NULL,
 `password` varchar(20) DEFAULT NULL,
 PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 CREATE TABLE `todos` (
 `id` bigint(20) NOT NULL AUTO_INCREMENT,
 `description` varchar(255) DEFAULT NULL,
@@ -17,7 +18,7 @@ CREATE TABLE `todos` (
 `title` varchar(255) DEFAULT NULL,
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_0900_ai_ci;
-CREATE USER ‘todo’@’%’ IDENTIFIED BY ‘prueba2024’;
-GRANT ALL PRIVILEGES ON todo.* TO ‘todo’@’%’;
+COLLATE=utf8mb4_general_ci;
+CREATE USER 'todo'@'%' IDENTIFIED BY 'prueba2024';
+GRANT ALL PRIVILEGES ON todo.* TO 'todo'@'%';
 FLUSH PRIVILEGES;
