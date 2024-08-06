@@ -1,0 +1,60 @@
+---
+- name: Configuramos parametros de instalacion segura
+  hosts: database
+  become: true
+  user: sysadmin
+
+  vars:
+    db_root_password: 'dbadmin'
+
+  tasks:
+
+  - name: Establecer contraseña root de MySQL
+    community.mysql.mysql_user:
+      login_user: root
+      login_password: dbadmin
+      name: root
+      host_all: true
+      password: "{{ db_root_password }}"
+      state: present
+    when: db_root_password is defined
+
+    
+  - name: Eliminar usuarios anónimos
+    community.mysql.mysql_user:
+      login_user: root
+      login_password: "{{ db_root_password }}"
+      name: ''
+      host_all: true
+      state: absent
+
+    
+  - name: Deshabilitar acceso remoto para el usuario root
+    community.mysql.mysql_user:
+      login_user: root
+      login_password: "{{ db_root_password }}"
+      name: root
+      host: "{{ item }}"
+      state: absent
+    loop:
+      - "127.0.0.1"
+      - "::1"
+      - "localhost"
+
+    
+  - name: Eliminar base de datos de prueba
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{ db_root_password }}"
+      name: test
+      state: absent
+
+    
+  - name: Recargar tablas de privilegios
+    community.mysql.mysql_user:
+      login_user: root
+      login_password: "{{ db_root_password }}"
+      name: root
+      host: localhost
+      priv: ".:ALL,GRANT"
+      state: present

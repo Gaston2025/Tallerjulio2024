@@ -37,7 +37,7 @@
 ## Instalación de base de datos
   - name: MariaDB instalado
     ansible.builtin.apt:
-      name: "{{ item }}"
+      name: "{{ item }}" 
       state: present
       update-cache: true
     loop:
